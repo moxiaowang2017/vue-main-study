@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetable-2@1.6.0"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <div id="capp"></div>
+  </body>
+</html>
+<script>
+
+  // function def(obj, key, val, enumerable) {
+  //   // console.log('------------def-----------',obj,key, val, enumerable)
+  //   Object.defineProperty(obj, key, {
+  //     value: val,
+  //     enumerable: !!enumerable,
+  //     writable: true,
+  //     configurable: true
+  //   })
+  // }
+  // const arrayProto = Array.prototype // 数组原型
+  // const arrayMethods = Object.create(arrayProto) // 创建数组对象
+  // const nullObj = Object.create(null) // 创建数组对象
+  // console.log('1.',nullObj)
+  // console.log('2.',arrayMethods)
+  // // console.log('3.',__DEV__)
+  // const methodsToPatch = [
+  //   'push',
+  //   'pop',
+  //   'shift',
+  //   'unshift',
+  //   'splice',
+  //   'sort',
+  //   'reverse'
+  // ]
+
+  // /**
+  //  * Intercept mutating methods and emit events
+  //  */
+  // methodsToPatch.forEach(function (method) {
+  //   // cache original method
+  //   const original = arrayProto[method]
+  //   def(arrayMethods, method, function mutator(...args) {
+  //     const result = original.apply(this, args)
+  //     const ob = this.__ob__
+  //     let inserted
+  //     switch (method) {
+  //       case 'push':
+  //       case 'unshift':
+  //         inserted = args
+  //         break
+  //       case 'splice':
+  //         inserted = args.slice(2)
+  //         break
+  //     }
+  //     // if (inserted) ob.observeArray(inserted)
+  //     // // notify change
+  //     // if (__DEV__) {
+  //     //   ob.dep.notify({
+  //     //     type: TriggerOpTypes.ARRAY_MUTATION,
+  //     //     target: this,
+  //     //     key: method
+  //     //   })
+  //     // } else {
+  //     //   ob.dep.notify()
+  //     // }
+  //     console.log('------------------result---------------',result)
+  //     console.log('------------------insert---------------',inserted)
+  //     return result
+  //   })
+  // })
+  // nullObj.p = 24; // 在严格模式下会报错
+  // nullObj.p; // 42
+
+  // nullObj.q = 12;
+  // for (const prop in nullObj) {
+  //   console.log(prop);
+  // }
+  // // 'q'
+
+  // delete nullObj.p;
+  // const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
+  // console.log('4.',arrayKeys)
+
+  // function toArray(list, start){
+  //   start = start || 0
+  //   let i = list.length - start
+  //   const ret = new Array(i)
+  //   while (i--) {
+  //     ret[i] = list[i + start]
+  //   }
+  //   return ret
+  // }
+  // let list = [1,4,5,6,7,97,6]
+  // let copyList = toArray(list,4)
+  // console.info('copyList',copyList)
+  // console.info('list',list)
+  // var MyPlugin = null
+  // MyPlugin.install = function (Vue, options) {
+
+  //   // 4. 添加实例方法
+  //   Vue.prototype.$myMethod = function (methodOptions) {
+  //     // 逻辑...
+  //   }
+  // }
+  // const app = new Vue({
+  //     el: '#app',
+  //     template: '<div>123</div>'
+  // })
+  // Vue.use(Vuetable,{
+  //   tte: "dddd"
+  // })
+
+  // // console.info('Vue._installedPlugins',Vue._installedPlugins)
+
+  // function makeMap(str,expectsLowerCase){
+  //   const map = Object.create(null)
+  //   const list = str.split(',')
+  //   for (let i = 0; i < list.length; i++) {
+  //     map[list[i]] = true
+  //   }
+  //   console.log('makeMap--map',map)
+  //   return expectsLowerCase ? val => map[val.toLowerCase()] : val => map[val]
+  // }
+  // const isBuiltInTag = makeMap('slot,component', false)
+  // console.info('isBuiltInTag',isBuiltInTag('Slot'))
+  
+  const app = new Vue({
+      myOption: 'hello!',
+      el: '#app',
+      template: '<div>123</div>',
+      props: {
+        'table-title': {
+          type: 'string',
+          default: '123'
+        }
+      }
+  })
+  //  这块合并的不是new Vue()中初始化的数据,而是原始的数据
+  Vue.mixin({
+    el: '#capp',
+    created: function () {
+      var myOption = this.$options.myOption
+      if (myOption) {
+        console.log('myOption',myOption)
+      }
+    }
+  })
+  
+  // Vue.mixin({
+  //   el: '#capp'
+  // })
+
+  console.info(app)
+</script>

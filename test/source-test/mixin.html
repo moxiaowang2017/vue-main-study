@@ -1,0 +1,80 @@
+<!-- 关于混入的测试 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="../../dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetable-2@1.6.0"></script>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <div id="capp"></div>
+  </body>
+</html>
+<!-- 第一种情况 -->
+<!-- <script>
+  // 这个调用 Vue.prototype._init方法中引用的mergeOptions
+  const app = new Vue({
+      myOption: 'hello!',
+      el: '#app',
+      template: '<div>123</div>',
+      props: {
+        'table-title': {
+          type: 'string',
+          default: '123'
+        }
+      }
+  })
+   /**
+   *  这种顺序下 -> mixin和new Vue() 是分开的
+   *  父组件的option为=> 原始默认的option
+   *  子组件的option为=> new Vue() 中的option
+   **/
+
+  //  这块合并的不是new Vue()中初始化的数据参数,而是原始的数据参数,顺序放在new Vue() 之后不会打印 myOption 的值
+  Vue.mixin({
+    created: function () {
+      var myOption = this.$options.myOption
+      if (myOption) {
+        console.log('myOption',myOption)
+      }
+    }
+  })
+  /**
+   *  这种顺序下 -> mixin和new Vue() 是分开的
+   *  父组件的option为=> 原始默认的option
+   *  子组件的option为=> mixin中的option
+   **/
+</script> -->
+<!-- 第二种情况 -->
+<script>
+  //  这块合并的不是与new Vue()中初始化的数据参数,而是原始的数据参数,顺序放在new Vue() 之之前会打印 myOption 的值
+  Vue.mixin({
+    created: function () {
+      var myOption = this.$options.myOption
+      if (myOption) {
+        console.log('=================myOption===================', myOption)
+      }
+    }
+  })
+  // mixin放在初始化之前,合并option时,会将mixin合并之后的option合并到new Vue()里面
+  const app = new Vue({
+    myOption: 'hello!',
+    el: '#app',
+    template: '<div>123</div>',
+    props: {
+      'table-title': {
+        type: 'string',
+        default: '123'
+      }
+    }
+  })
+  /**
+   *  这种顺序下
+   *  父组件的option为=> mixin合并之后的参数
+   *  子组件的option为=> new Vue()中的参数
+   **/
+</script>
